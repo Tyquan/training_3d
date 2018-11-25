@@ -8,8 +8,11 @@ public class Rocket : MonoBehaviour {
     Rigidbody rb;
     AudioSource audioSource;
 
-	// Use this for initialization
-	void Start () {
+    [SerializeField] float rcsThrust = 100f;
+    [SerializeField] float mainThrust = 800.0f;
+
+    // Use this for initialization
+    void Start () {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
 	}
@@ -22,24 +25,25 @@ public class Rocket : MonoBehaviour {
 
     private void Rotate()
     {
+
         rb.freezeRotation = true; // take manual control of the physics
+        float rotationThisFrame = rcsThrust * Time.deltaTime;
         if (Input.GetKey(KeyCode.A))
         {
-            //print("Pressing A"); // thrust left
-            transform.Rotate(Vector3.forward);
+            transform.Rotate(Vector3.forward * rotationThisFrame); // thrust left
         } else if (Input.GetKey(KeyCode.D))
         {
-            //print("Pressing D"); // thrust right
-            transform.Rotate(-Vector3.forward);
+            transform.Rotate(-Vector3.forward * rotationThisFrame); // thrust right
         }
         rb.freezeRotation = true; // resume default physices
     }
 
     private void Thrust()
     {
+        float thrustThisFrame = mainThrust * Time.deltaTime;
         if (Input.GetKey(KeyCode.Space)) // Can thrust while rotating
         {
-            rb.AddRelativeForce(Vector3.up);
+            rb.AddRelativeForce(Vector3.up * thrustThisFrame);
             if (!audioSource.isPlaying) // so the audio doesnt overlap
             {
                 audioSource.Play();
