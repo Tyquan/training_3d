@@ -22,15 +22,17 @@ public class Rocket : MonoBehaviour {
 
     private void Rotate()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        rb.freezeRotation = true; // take manual control of the physics
+        if (Input.GetKey(KeyCode.A))
         {
             //print("Pressing A"); // thrust left
             transform.Rotate(Vector3.forward);
-        } else if (Input.GetKeyDown(KeyCode.D))
+        } else if (Input.GetKey(KeyCode.D))
         {
             //print("Pressing D"); // thrust right
             transform.Rotate(-Vector3.forward);
         }
+        rb.freezeRotation = true; // resume default physices
     }
 
     private void Thrust()
